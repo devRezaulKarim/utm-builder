@@ -3,10 +3,9 @@
 import { Button } from "@/components/ui/button";
 import { chatSteps } from "@/utils/chatSteps";
 import { useEffect, useState, useRef } from "react";
-import { IoSend } from "react-icons/io5";
-import { Input } from "@/components/ui/input";
-import { FaRegCopy } from "react-icons/fa6";
-import { CopyToClipboard } from "react-copy-to-clipboard";
+import Form from "./Form";
+import Chat from "./Chat";
+import Typing from "./Typing";
 
 const UtmBuilder = () => {
   const [userInput, setUserInput] = useState({
@@ -125,55 +124,15 @@ const UtmBuilder = () => {
         <div className="flex flex-col justify-end  h-[750px] px-5 py-4 m-2 bg-gray-100 rounded-lg shadow-[inset_0px_0px_5px_1px]">
           <div className="overflow-auto chatBody flex flex-col">
             {chatHistory.map((conversation, index) => (
-              <div
-                className={`my-2 max-w-[90%] p-2 rounded-xl ${
-                  conversation.type === "response"
-                    ? "ml-auto bg-gradient-to-r from-violet-500 to-indigo-700 break-all"
-                    : "bg-gray-200"
-                }`}
+              <Chat
                 key={index}
-              >
-                <span
-                  className={`text-lg ${
-                    conversation.type === "response"
-                      ? "text-white rounded-full"
-                      : ""
-                  }`}
-                >
-                  {`${
-                    conversation.message === "" ? "Skip" : conversation.message
-                  }`}
-                </span>
-                {conversation.url && (
-                  <div className="relative">
-                    <p className="bg-gray-200 border p-2 rounded-lg border-violet-500 shadow-[inset_0px_0px_5px_1px_gray] break-all">
-                      {conversation.url.toLowerCase()}
-                    </p>
-                    <div
-                      onMouseLeave={() => setCopyStatus("Copy")}
-                      className="group absolute top-1 right-1"
-                    >
-                      <p className="absolute px-2 bg-violet-500 rounded text-xs font-semibold text-white py-1 right-14 translate-x-1/4 top-0  w-[70px] text-center after:content-[''] after:w-3 after:aspect-square after:bg-violet-500 after:absolute after:top-1/2 after:-translate-y-1/2 after:right-0 after:translate-x-1/3 after:rotate-45 scale-0 group-hover:scale-100 duration-100">
-                        {copyStatus}
-                      </p>
-                      <CopyToClipboard
-                        text={conversation.url.toLowerCase()}
-                        onCopy={() => setCopyStatus("Copied!")}
-                      >
-                        <Button
-                          className="opacity-80 hover:opacity-100 duration-300"
-                          size="xs"
-                        >
-                          <FaRegCopy className="text-sm" />
-                        </Button>
-                      </CopyToClipboard>
-                    </div>
-                  </div>
-                )}
-              </div>
+                conversation={conversation}
+                copyStatus={copyStatus}
+                setCopyStatus={setCopyStatus}
+              />
             ))}
             {isLoading ? (
-              <p>Loading..</p>
+              <Typing />
             ) : chatSteps[step]?.isFinal ? (
               ""
             ) : (
@@ -183,74 +142,15 @@ const UtmBuilder = () => {
             )}
             <div ref={bottomOfMsgBox}></div>
           </div>
-          <div className="mt-4 text-center">
-            <div className="mb-2">
-              {chatSteps[step]?.suggestions &&
-                !isLoading &&
-                chatSteps[step]?.suggestions.map((suggestion, i) => (
-                  <label
-                    htmlFor="response"
-                    onClick={() =>
-                      setUserInput(() => {
-                        return {
-                          ...userInput,
-                          message: suggestion,
-                        };
-                      })
-                    }
-                    className={` mr-2 py-1 px-2 rounded-lg text-white hover:bg-indigo-700 duration-300 cursor-pointer ${
-                      userInput.message === suggestion
-                        ? "bg-indigo-700"
-                        : "bg-indigo-500"
-                    }`}
-                    key={i}
-                  >
-                    {suggestion}
-                  </label>
-                ))}
-              {errorMsg && <p className="mt-1 text-red-700">{errorMsg}</p>}
-            </div>
-
-            <form
-              className="flex flex-col relative"
-              onSubmit={handleNextStep}
-              action=""
-            >
-              <Input
-                id="response"
-                className="pr-12"
-                type={chatSteps[step]?.userInputName === "URL" ? "url" : "text"}
-                value={userInput.message}
-                placeholder="Your answer"
-                onChange={(e) =>
-                  setUserInput({ ...userInput, message: e.target.value })
-                }
-                disabled={chatSteps[step]?.isFinal}
-              />
-              <div className="absolute right-0 top-1/2 -translate-y-1/2 flex">
-                {userInput.message === "" &&
-                  !isLoading &&
-                  (chatSteps[step].userInputName === "medium" ||
-                    chatSteps[step].userInputName === "term" ||
-                    chatSteps[step].userInputName === "content") && (
-                    <Button type="submit" variant="link">
-                      Skip
-                    </Button>
-                  )}
-
-                <Button
-                  disabled={chatSteps[step]?.isFinal}
-                  type="submit"
-                  variant="ghost"
-                >
-                  <IoSend
-                    className={`${
-                      userInput.message ? "text-indigo-700" : "text-gray-300"
-                    } text-3xl`}
-                  />
-                </Button>
-              </div>
-            </form>
+          <div className="my-3 text-center">
+            <Form
+              handleNextStep={handleNextStep}
+              chatSteps={chatSteps}
+              step={step}
+              userInput={userInput}
+              setUserInput={setUserInput}
+              isLoading={isLoading}
+            />
             {chatSteps[step]?.isFinal && (
               <Button className="mt-2" onClick={handleStartOver}>
                 Start Over
