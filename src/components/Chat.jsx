@@ -20,7 +20,7 @@ const Chat = ({ conversation, copyStatus, setCopyStatus }) => {
       </span>
       {conversation.url && (
         <div className="relative">
-          <p className="bg-gray-200 border p-2 rounded-lg border-violet-500 shadow-[inset_0px_0px_5px_1px_gray] break-all">
+          <p className="bg-gray-100 border p-2 rounded-lg border-violet-500 shadow-[inset_0px_0px_5px_1px_gray] break-all">
             {conversation.url}
           </p>
           <div
