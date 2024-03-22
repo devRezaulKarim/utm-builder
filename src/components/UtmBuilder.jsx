@@ -38,23 +38,24 @@ const UtmBuilder = () => {
     //Generating the UTM URL
     if (step === chatSteps.length - 1) {
       setChatHistory(() => {
-        const url = utmParameters.URL.replace(/\s+/g, "_");
-        const source = utmParameters.source.replace(/\s+/g, "_");
+        const url = utmParameters.URL;
+        const source = utmParameters.source;
         const medium = utmParameters.medium
-          ? `&utm_medium=${utmParameters.medium.replace(/\s+/g, "_")} `
+          ? `&utm_medium=${utmParameters.medium} `
           : "";
-        const campaignName = utmParameters.campaignName.replace(/\s+/g, "_");
+        const campaignName = utmParameters.campaignName;
         const term = utmParameters.term
-          ? `&utm_term=${utmParameters.term.replace(/\s+/g, "_")}`
+          ? `&utm_term=${utmParameters.term}`
           : "";
         const content = utmParameters.content
-          ? `&utm_content=${utmParameters.content.replace(/\s+/g, "_")}`
+          ? `&utm_content=${utmParameters.content}`
           : "";
+        const utmUrl = `${url}?utm_source=${source}${medium}&utm_campaign=${campaignName}${term}${content}`;
         return [
           ...chatHistory,
           {
             message: `Thank you! Here is your UTM URL: `,
-            url: `${url}?utm_source=${source}${medium}&utm_campaign=${campaignName}${term}${content}`,
+            url: utmUrl.replace(/\s+/g, "_").toLowerCase(),
           },
         ];
       });
@@ -150,6 +151,7 @@ const UtmBuilder = () => {
               userInput={userInput}
               setUserInput={setUserInput}
               isLoading={isLoading}
+              errorMsg={errorMsg}
             />
             {chatSteps[step]?.isFinal && (
               <Button className="mt-2" onClick={handleStartOver}>
