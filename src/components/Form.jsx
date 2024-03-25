@@ -27,7 +27,7 @@ const Form = ({
                   };
                 })
               }
-              className={` mr-2 py-1 px-2 rounded-lg text-white hover:bg-indigo-700 duration-300 cursor-pointer ${
+              className={` mr-2 mt-1 py-1 px-2 rounded-lg text-white hover:bg-indigo-700 duration-300 cursor-pointer text-xs break-words inline-block ${
                 userInput.message === suggestion
                   ? "bg-indigo-700"
                   : "bg-indigo-500"
@@ -61,7 +61,7 @@ const Form = ({
             (chatSteps[step].userInputName === "medium" ||
               chatSteps[step].userInputName === "term" ||
               chatSteps[step].userInputName === "content") && (
-              <Button type="submit" variant="link">
+              <Button type="submit" variant="link" size="sm">
                 Skip
               </Button>
             )}
@@ -74,7 +74,7 @@ const Form = ({
             <IoSend
               className={`${
                 userInput.message ? "text-indigo-700" : "text-gray-300"
-              } text-3xl`}
+              } text-2xl`}
             />
           </Button>
         </div>

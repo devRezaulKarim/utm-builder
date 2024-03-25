@@ -118,11 +118,11 @@ const UtmBuilder = () => {
 
   return (
     <main className="w-screen h-screen grid place-items-center">
-      <div className="w-[500px] bg-gradient-to-r  from-indigo-700 to-violet-500 overflow-hidden rounded-xl shadow-[0px_0px_100px_1px] shadow-slate-500">
+      <div className="w-[400px] bg-gradient-to-r  from-indigo-700 to-violet-500 overflow-hidden rounded-xl shadow-[0px_0px_100px_1px] shadow-slate-500">
         <h2 className="text-center text-3xl text-white font-bold mt-2">
           UTM Builder
         </h2>
-        <div className="flex flex-col justify-end  h-[750px] px-5 py-4 m-2 bg-gray-100 rounded-lg shadow-[inset_0px_0px_5px_1px]">
+        <div className="flex flex-col justify-end  h-[500px] px-5 py-4 m-2 bg-gray-100 rounded-lg shadow-[inset_0px_0px_5px_1px]">
           <div className="overflow-auto chatBody flex flex-col">
             {chatHistory.map((conversation, index) => (
               <Chat
@@ -137,7 +137,7 @@ const UtmBuilder = () => {
             ) : chatSteps[step]?.isFinal ? (
               ""
             ) : (
-              <p className="text-lg bg-gray-200 p-2 rounded-lg w-[90%]">
+              <p className="bg-gray-200 p-2 rounded-lg w-[90%]">
                 {chatSteps[step]?.message}
               </p>
             )}

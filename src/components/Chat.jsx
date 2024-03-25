@@ -12,7 +12,7 @@ const Chat = ({ conversation, copyStatus, setCopyStatus }) => {
       }`}
     >
       <span
-        className={`text-lg ${
+        className={` ${
           conversation.type === "response" ? "text-white rounded-full" : ""
         }`}
       >
